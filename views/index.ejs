@@ -1,1 +1,119 @@
-Middle
+<div class="banner">
+  <div class="slider">
+    <img src="images/img1.jpg" alt="ban" id="slideImg" />
+  </div>
+  <div class="overlay">
+    <div class="content">
+      <h3>MÓN NGON MỖI NGÀY</h3>
+      <p>
+        Hãy đặt món theo sở thích và nhu cầu của bạn, cửa hàng của chúng tôi
+        luôn sẵn sàng để phục vụ 24/7
+      </p>
+      <a href="#menu"><button type="button">WATCH MENU</button></a>
+      <a href="#footer"><button type="button" id="btn-2">SUBCRIBE</button></a>
+    </div>
+  </div>
+</div>
+<section class="about" id="about">
+  <div class="container-fluid">
+    <h2 class="heading"><span>ABOUT</span> US</h2>
+    <div class="row">
+      <div class="col img">
+        <img src="images/f1.jpg" alt="f1" />
+      </div>
+      <div class="col content">
+        <h3>Địa chỉ: 41 Hùng Vương, Phường Yên Đỗ, TP.Pleiku</h3>
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio placeat
+          dolor sequi voluptatum nemo vero iste delectus quisquam, ut magnam,
+          quo cupiditate soluta laborum ipsum magni harum provident deleniti,
+          excepturi aperiam molestias asperiores praesentium inventore.
+          Doloribus, nobis ducimus? Soluta, consequatur?
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="menu" id="menu">
+  <h1 class="heading">our <span>menu</span></h1>
+
+  <div class="box-container">
+    <% products.forEach(product => { %>
+    <div class="box">
+      <img src="<%= product.cover %> " alt="" />
+      <h3><%= product.name %></h3>
+      <div class="price">$<%= product.price %></div>
+      <a href="#" class="btn1">add to cart</a>
+    </div>
+    <% }) %>
+  </div>
+  <div class="linkto">
+    <a href="/products">See more...</a>
+  </div>
+</section>
+
+<!-- menu section ends -->
+
+<section class="review" id="review">
+  <h1 class="heading">customer's <span>review</span></h1>
+
+  <div class="box-container">
+    <div class="box">
+      <img src="images/quote-img.png" alt="" class="quote" />
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi nulla sit
+        libero nemo fuga sequi nobis? Necessitatibus aut laborum, nisi quas
+        eaque laudantium consequuntur iste ex aliquam minus vel? Nemo.
+      </p>
+      <img src="images/pic-1.png" class="user" alt="" />
+      <h3>john deo</h3>
+      <div class="stars">
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star-half-alt"></i>
+      </div>
+    </div>
+
+    <div class="box">
+      <img src="images/quote-img.png" alt="" class="quote" />
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi nulla sit
+        libero nemo fuga sequi nobis? Necessitatibus aut laborum, nisi quas
+        eaque laudantium consequuntur iste ex aliquam minus vel? Nemo.
+      </p>
+      <img src="images/pic-2.png" class="user" alt="" />
+      <h3>john deo</h3>
+      <div class="stars">
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star-half-alt"></i>
+      </div>
+    </div>
+
+    <div class="box">
+      <img src="images/quote-img.png" alt="" class="quote" />
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi nulla sit
+        libero nemo fuga sequi nobis? Necessitatibus aut laborum, nisi quas
+        eaque laudantium consequuntur iste ex aliquam minus vel? Nemo.
+      </p>
+      <img src="images/pic-3.png" class="user" alt="" />
+      <h3>john deo</h3>
+      <div class="stars">
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star-half-alt"></i>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- review section ends -->
+<!-- footer section starts  -->

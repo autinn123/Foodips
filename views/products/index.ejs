@@ -1,0 +1,103 @@
+<section class="main-menu">
+  <h1 class="heading">our <span>menu</span></h1>
+  <div class="filter-box">
+    <div class="search-form">
+      <input type="search" id="search-box" placeholder="Search here..." />
+      <label for="search-box" class="fas fa-search"></label>
+    </div>
+    <div class="filter">
+        <ul>
+            <% if (category === 1) { %>
+              <a href="/products"><li class="list active" data-filter="All">all</li></a>
+            <% }else { %>
+                <a href="/products"><li class="list" data-filter="All">all</li></a>
+                <% } %> 
+            <% categorys.forEach(item => { %>
+                <% if (category === item) { %>
+                    <li class="list active" data-filter="Food" onclick="Data(this)"><a href="/products/<%= item.toString() %>"><%= item %></a> </li>
+                <% } else {%>
+                    <li class="list" data-filter="Food" onclick="Data(this)"><a href="/products/<%= item.toString() %>"><%= item %></a> </li>
+                 <% } %> 
+            <% }) %>
+      </ul>
+    </div>
+  </div>
+  <div class="box-container">
+    <% products.forEach(product => { %>
+    <div class="box">
+      <a href="/products/detail/<%= product._id %>">
+        <div class="img-wrap">
+          <img src="<%= product.cover %> " alt="" />
+        </div>
+      </a>
+      <h3><%= product.name %></h3>
+      <div class="price">$<%= product.price %><span> </span></div>
+      <a href="/menu/detail" class="btn1">add to cart</a>
+    </div>
+    <% }) %>
+  </div>
+<!-- pagination -->
+<div class="row">
+    <!-- hiển thị phân trang nếu có trang -->
+    <% if(pages > 0) { %>
+    <nav class="mx-auto">
+      <ul class="pagination" style="margin-top: 2rem;">
+      
+        <!-- FIRST ITEM -->  
+        <% if(current == 1) { %> 
+            <li class="page-item disabled">
+              <a class="page-link" href="/">First</a>
+            </li>
+        <% } else { %>
+            <li class="page-item">
+              <a class="page-link" href="/">First</a>
+            </li>
+        <% } %>
+        
+        <!-- ITEMS  -->
+        <% var i = (Number(current) > 3 ? Number(current) - 2 : 1) %> 
+        <% if(i !== 1) { %>
+            <li class="page-item disabled">
+              <a class="page-link" href="#">...</a>
+            </li>
+        <% } %>
+        <% for(; i <= (Number(current) + 2) && i <= pages; i++) { %>
+          <% if(i == current) { %>
+            <li class="page-item active">
+              <a class="page-link" href="/products?page=<%= i.toString() %>">
+                <%= i %>
+              </a>
+            </li>
+        <% } else { %>
+            <li class="page-item">
+              <a class="page-link" href="/products?page=<%= i.toString() %>">
+                <%= i %>
+              </a>
+            </li>
+        <% } %>
+        <% if (i == Number(current) + 2 && i < pages) { %>
+            <li class="page-item disabled">
+              <a class="page-link" href="#">...</a>
+            </li>
+        <% } %>
+        <% } %>
+        
+        <!-- LAST ITEM -->
+        <% if(current == pages) { %> 
+            <li class="page-item disabled">
+              <a class="page-link" href="#">
+                Last
+              </a>
+            </li>
+        <% } else { %>
+            <li class="page-item">
+              <a class="page-link" href="/products?page=<%= pages.toString() %>">
+                Last
+              </a>
+            </li>
+        <% } %>
+      </ul>
+    </nav>
+    <% } %>
+  </div>
+</div>

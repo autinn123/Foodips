@@ -4,8 +4,11 @@ require('dotenv').config();
 const express = require('express');
 const app = express();
 const expressLayouts = require('express-ejs-layouts');
+const ejs = require('ejs');
+
 
 const indexRouter = require('./routes/index');
+const productRouter = require('./routes/products');
 
 
 var mongoose = require('mongoose');
@@ -25,5 +28,6 @@ app.use(express.static('public'));
 
 
 app.use('/', indexRouter);
+app.use('/products', productRouter);
 
 app.listen(process.env.PORT || 3000);
