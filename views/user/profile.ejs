@@ -1,0 +1,102 @@
+<div class="container">
+  <div class="row profile">
+    <div class="col-md-3">
+      <div class="profile-contain">
+        <div class="img-avatar-content">
+          <div class="frame-avatar">
+            <img
+              src="/images/user-default-icon.png"
+              alt="avatar"
+              class="img-fluid"
+            />
+          </div>
+          <p class="user-name"><%= user.userName %></p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-9">
+      <div class="profile-main">
+        <div class="profile-main-header row">
+          <div class="col-6"><span>Thông tin tài khoản</span></div>
+          <div class="col-6 text-right">
+            <span class="main-header-item active" id="profile-info"
+              >Profile</span
+            >
+            &nbsp;
+            <span class="main-header-item" id="profile-pass"
+              >Change password</span
+            >
+          </div>
+        </div>
+        <hr />
+        <div class="profile-main-content">
+          <form
+            id="change-info-form"
+            action="/user/<%= user.id %>?_method=PATCH"
+            method="post"
+            style="display: block"
+          >
+            <div class="form-group row">
+              <div class="col-md-6">
+                <label>Email</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  value="<%= user.email%>"
+                  name="email"
+                  disabled
+                />
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-md-6">
+                <label>Username</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  value="<%= user.userName %>"
+                  name="userName"
+                />
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-md-6">
+                <label>Phone Number</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  value="<%= user.phoneNumber %>"
+                  name="phoneNumber"
+                />
+              </div>
+            </div>
+            <button type="submit" class="btn-update">Update</button>
+          </form>
+          <form id="change-pass-form" action="" style="display: none">
+            <div class="form-group row">
+              <div class="col-md-6">
+                <label>Current password</label>
+                <input type="password" class="form-control" name="password" />
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-md-6">
+                <label>New password</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  name="newPassword"
+                />
+              </div>
+              <div class="col-md-6">
+                <label>Confirm new password</label>
+                <input type="password" class="form-control" name="rePassword" />
+              </div>
+            </div>
+            <button type="submit" class="btn-update">Update</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
