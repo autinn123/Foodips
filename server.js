@@ -14,12 +14,14 @@ const passport = require('passport');
 const flash = require('express-flash');
 const session = require('express-session');
 const methodOverride = require('method-override');
+const MongoStore = require('connect-mongo');
 
 require('./config/passport')(passport);
 
 const indexRouter = require('./routes/index');
 const productRouter = require('./routes/products');
 const userRouter = require('./routes/user');
+const apiRouter = require('./api/product');
 
 var mongoose = require('mongoose');
 mongoose
@@ -52,6 +54,8 @@ app.use(
     secret: 'secret',
     resave: false,
     saveUninitialized: false,
+    store: MongoStore.create({ mongoUrl: process.env.DATABASE_URL }),
+    cookie: { maxAge: 180 * 60 * 1000 },
   })
 );
 
@@ -65,6 +69,7 @@ app.use(flash());
 //global vars
 app.use(function (req, res, next) {
   res.locals.user = req.user;
+  res.locals.session = req.session;
   next();
 });
 
@@ -77,5 +82,10 @@ app.use(
 app.use('/', indexRouter);
 app.use('/products', productRouter);
 app.use('/user', userRouter);
+app.use('/api/product', apiRouter);
+
+app.all('*', (req, res) => {
+  res.status(404).send('<h1 >404! Page not found</h1>');
+});
 
 app.listen(process.env.PORT || 3000);

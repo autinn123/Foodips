@@ -735,7 +735,6 @@ section {
 
 .cart-items-container {
   position: relative;
-  top: 15rem;
   min-height: 100vh;
   margin-bottom: 26.5rem;
 }
@@ -1080,4 +1079,9 @@ section {
 .userName {
   font-size: 1.6rem;
   color: var(--main-color);
+}
+
+#quantity {
+  font-size: 1.5rem;
+  color: red;
 }

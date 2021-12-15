@@ -4,11 +4,13 @@
             <img src="<%= product.cover %> " alt="">
         </div>
         <div class="col content">
-            <h3 class="h3"> <%= product.name %> </h3>
-            <p><span>Description:</span> <%= product.description %> </p>
-            <div class="price">$<%= product.price %></div>
-            <input type="number" value="1">
-            <a href="/detail" class="btn1">add to cart</a>
+            <form action="/products/<%= product._id %>/addCart" method="post">
+                <h3 class="h3"> <%= product.name %> </h3>
+                <p><span>Description:</span> <%= product.description %> </p>
+                <div class="price">$<%= product.price %></div>
+                <input type="number" value="1" name="qty">
+                <button type="submit">Add to cart</button>
+            </form>
         </div>
     </div>
     <div class="container" id="relavent">
@@ -30,40 +32,25 @@
     </div>
     <div class="row cmt">
         <h2>Comments...</h2>
+        <%- include ("../partials/messages"); %>
         <div class="col-12">
             <div class="comments">
                 <div class="comment-box add-comment">
                     <span class="commenter-pic">
-                        <img src="/images/pic-1.png" class="img-fluid">
+                        <img src="/images/user-default-icon.png" class="img-fluid">
                     </span>
                     <span class="commenter-name">
-                        <input type="text" placeholder="Add a public comment" name="Add Comment">
-                        <button type="submit" class="btn btn-default">Comment</button>
+                        <input type="hidden" name="productId" value="<%= product._id %>">
+                        <input type="text" placeholder="Add a public comment" name="content">
+                        <button type="submit" class="btn btn-default addComment">Comment</button>
                         <button type="cancel" class="btn btn-default">Cancel</button>
                     </span>
                 </div>
-                <div class="comment-box">
-                    <span class="commenter-pic">
-                        <img src="/images/pic-2.png" class="img-fluid">
-                    </span>
-                    <span class="commenter-name">
-                        <a href="#">Happy markuptag</a> <span class="comment-time">2 hours ago</span>
-                    </span>
-                    <p class="comment-txt more">Suspendisse massa enim, condimentum sit amet maximus quis, pulvinar sit
-                        amet ante. Fusce eleifend dui mi, blandit vehicula orci iaculis ac.</p>
-
+                <div class="loadComments">
+                    <div class="all-comment">
+                    </div>
                 </div>
-                <div class="comment-box">
-                    <span class="commenter-pic">
-                        <img src="/images/pic-3.png" class="img-fluid">
-                    </span>
-                    <span class="commenter-name">
-                        <a href="#">Happy markuptag</a> <span class="comment-time">2 hours ago</span>
-                    </span>
-                    <p class="comment-txt more">Suspendisse massa enim, condimentum sit amet maximus quis, pulvinar sit
-                        amet ante. Fusce eleifend dui mi, blandit vehicula orci iaculis ac.</p>
 
-                </div>
             </div>
         </div>
         <!-- pagination -->
@@ -71,3 +58,105 @@
 </div>
     </div>
 </div>
+<script>
+    $(document).ready(function() {
+    // alert('application started');
+    getdata();
+
+    $('.addComment').click(function (e) {
+        e.preventDefault();
+        var productId = $('input[name=productId]').val();
+        var content = $('input[name=content]').val();
+        $.ajax({
+          url: '/api/product/addComment',
+          method: 'post',
+          dataType: 'json',
+          data: { productId,
+                content,
+            },
+          success: function (response) {
+            if (response.msg == 'success') {
+            //   alert('add comment successfully');
+                getdata();
+                $('input[name=content]').val('');
+            } else {
+              alert('some error occurred try again');
+            }
+          },
+          error: function (response) {
+            alert('You should sign in or input your name and email below to comment');
+          },
+        });
+      });
+
+    function getdata() {
+    var productId = $('input[name=productId]').val();
+    $.ajax({
+      url: `/api/product/${productId}`,
+      method: 'get',
+      dataType: 'json',
+      success: function (response) {
+        if (response.msg == 'success') {
+        $('div.commented').remove();
+          if (
+            response.data !== undefined ||
+            response.data !== null ||
+            response.data !== ''
+          ) {
+            $('.all-comment').show();
+            $.each(response.data, function (index, data) {
+            const time = timeSince(Date.parse(data.createdAt));
+              $('div.all-comment').append(
+                "<div class='comment-box commented'>" +
+                        "<span class='commenter-pic'>" +
+                            "<img src='/images/user-default-icon.png' class='img-fluid'>" +
+                        "</span>" +
+                        "<span class='commenter-name'>" +
+                            "<a href='#'>" + 
+                                data.userId.userName + 
+                            "</a> <span class='comment-time'>" + time + " ago </span>" +
+                        "</span>" +
+                        "<p class='comment-txt more'>" + 
+                            data.content +
+                        "</p>" +
+                    "</div>"
+              );
+            });
+          }
+        }
+      },
+      error: function (response) {
+        alert(response.error);
+      },
+    });
+  }
+
+  function timeSince(date) {
+
+        var seconds = Math.floor((new Date() - date) / 1000);
+
+        var interval = seconds / 31536000;
+
+        if (interval > 1) {
+        return Math.floor(interval) + " years";
+        }
+        interval = seconds / 2592000;
+        if (interval > 1) {
+        return Math.floor(interval) + " months";
+        }
+        interval = seconds / 86400;
+        if (interval > 1) {
+        return Math.floor(interval) + " days";
+        }
+        interval = seconds / 3600;
+        if (interval > 1) {
+        return Math.floor(interval) + " hours";
+        }
+        interval = seconds / 60;
+        if (interval > 1) {
+        return Math.floor(interval) + " minutes";
+        }
+        return Math.floor(seconds) + " seconds";
+}
+})
+</script>

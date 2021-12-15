@@ -8,6 +8,10 @@
       <a href="#about">About</a>
       <a href="/products">Menu</a>
       <a href="#review">Review</a>
+      <a href="/shopping-cart">
+        <div class="fas fa-shopping-cart" id="cart-btn"></div>
+        <span id="quantity"><%= session.cart.totalQty %> </span>
+      </a>
     </div>
     <div class="icons">
       <% if (user) { %>
@@ -16,9 +20,6 @@
       <a href="/signin"><button>Login</button></a>
       <% } %> <% if (user) { %>
       <a href="/user"><div class="fas fa-user" id="account-btn"></div></a>
-      <a href="/carts">
-        <div class="fas fa-shopping-cart" id="cart-btn"></div>
-      </a>
       <a href="/user/signout"><div class="fas fa-sign-out-alt"></div></a>
       <% } %>
       <div class="fas fa-bars" id="menu-btn"></div>

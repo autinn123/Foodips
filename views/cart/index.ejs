@@ -1,0 +1,29 @@
+<% if (products) { %>
+<div class="container cart-items-container">
+  <h2 class="heading"><span>Your</span> cart</h2>
+  <% products.forEach(product => { %>
+  <div class="cart-item">
+    <div class="content">
+      <img src="<%= product.item.cover %> " alt="" />
+      <div class="des">
+        <h3><%= product.item.name %></h3>
+        <div class="price"><strong>Total:</strong> $<%= product.price %></div>
+      </div>
+    </div>
+    <div class="div">
+      <label style="font-size: 2rem"
+        ><strong>Quantity:</strong>
+        <span style="font-size: 2rem"><%= product.qty %> </span></label
+      >
+    </div>
+    <div class="action">
+      <span class="fas fa-times"></span>
+    </div>
+  </div>
+  <% }) %>
+  <div class="total" style="font-size: 2rem">
+    <strong>Subtotal:</strong> $<%= totalPrice %>
+  </div>
+  <button class="btn1">Checkout now</button>
+</div>
+<% } %>

@@ -30,6 +30,7 @@
         </div>
         <hr />
         <div class="profile-main-content">
+          <%- include ("../partials/messages"); %>
           <form
             id="change-info-form"
             action="/user/<%= user.id %>?_method=PATCH"
@@ -72,11 +73,20 @@
             </div>
             <button type="submit" class="btn-update">Update</button>
           </form>
-          <form id="change-pass-form" action="" style="display: none">
+          <form
+            id="change-pass-form"
+            action="/user/update_password/<%= user.id %>?_method=PATCH"
+            style="display: none"
+            method="post"
+          >
             <div class="form-group row">
               <div class="col-md-6">
                 <label>Current password</label>
-                <input type="password" class="form-control" name="password" />
+                <input
+                  type="password"
+                  class="form-control"
+                  name="currentPassword"
+                />
               </div>
             </div>
             <div class="form-group row">
@@ -90,7 +100,11 @@
               </div>
               <div class="col-md-6">
                 <label>Confirm new password</label>
-                <input type="password" class="form-control" name="rePassword" />
+                <input
+                  type="password"
+                  class="form-control"
+                  name="confirmPassword"
+                />
               </div>
             </div>
             <button type="submit" class="btn-update">Update</button>

@@ -8,6 +8,15 @@ const userSchema = new Schema({
   userName: { type: String, required: true },
   createdAt: { type: Date, required: true, default: Date.now },
   address: { type: String },
+  status: {
+    type: String,
+    enum: ['Pending', 'Active'],
+    default: 'Pending',
+  },
+  confirmationCode: {
+    type: String,
+    unique: true,
+  },
 });
 
 module.exports = mongoose.model('User', userSchema);

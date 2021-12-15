@@ -8,9 +8,9 @@
     <div class="filter">
         <ul>
             <% if (category === 1) { %>
-              <a href="/products"><li class="list active" data-filter="All">all</li></a>
+              <a href="/products"><li class="list active" data-filter="All">All</li></a>
             <% }else { %>
-                <a href="/products"><li class="list" data-filter="All">all</li></a>
+                <a href="/products"><li class="list" data-filter="All">All</li></a>
                 <% } %> 
             <% categorys.forEach(item => { %>
                 <% if (category === item) { %>
@@ -25,14 +25,14 @@
   <div class="box-container">
     <% products.forEach(product => { %>
     <div class="box">
-      <a href="/products/detail/<%= product._id %>">
+      <a href="/products/<%= product._id %>/detail">
         <div class="img-wrap">
           <img src="<%= product.cover %> " alt="" />
         </div>
       </a>
       <h3><%= product.name %></h3>
       <div class="price">$<%= product.price %><span> </span></div>
-      <a href="/menu/detail" class="btn1">add to cart</a>
+      <a href="/add-to-cart/<%= product._id %> " class="btn1">Add to cart</a>
     </div>
     <% }) %>
   </div>

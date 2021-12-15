@@ -11,6 +11,11 @@ module.exports = function (passport) {
       User.findOne({
         email: email,
       }).then((user) => {
+        if (user.status != 'Active') {
+          return done(null, false, {
+            message: 'Pending Account. Please Verify Your Email!',
+          });
+        }
         if (!user) {
           return done(null, false, { message: 'That email is not registered' });
         }
@@ -28,10 +33,12 @@ module.exports = function (passport) {
     })
   );
 
+  //access the user object that above function return
+  // function called by passport.session .Helps us get user data based on information stored in session and attach it to req.user
   passport.serializeUser(function (user, done) {
-    done(null, user.id);
+    done(null, user.id); //req.session.passport.user = user.id
   });
-
+  // function called on successful authentication to save user information into session: req.user;
   passport.deserializeUser(function (id, done) {
     User.findById(id, function (err, user) {
       done(err, user);
