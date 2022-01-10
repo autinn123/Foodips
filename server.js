@@ -21,7 +21,8 @@ require('./config/passport')(passport);
 const indexRouter = require('./routes/index');
 const productRouter = require('./routes/products');
 const userRouter = require('./routes/user');
-const apiRouter = require('./api/product');
+const apiProductRouter = require('./api/product');
+const apiRouter = require('./api');
 
 var mongoose = require('mongoose');
 mongoose
@@ -82,7 +83,8 @@ app.use(
 app.use('/', indexRouter);
 app.use('/products', productRouter);
 app.use('/user', userRouter);
-app.use('/api/product', apiRouter);
+app.use('/api/product', apiProductRouter);
+app.use('/api', apiRouter);
 
 app.all('*', (req, res) => {
   res.status(404).send('<h1 >404! Page not found</h1>');

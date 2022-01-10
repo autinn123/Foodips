@@ -106,7 +106,6 @@ const verifyUser = (req, res, next) => {
       });
 
       req.flash('success_msg', 'Verify successfuly, you can sign in now');
-
       res.redirect('/signin');
     })
     .catch((e) => console.log('error', e));
@@ -114,6 +113,17 @@ const verifyUser = (req, res, next) => {
 
 const updateInfo = async (req, res) => {
   const { userName, phoneNumber } = req.body;
+  let errors = [];
+  if (userName.length < 5) {
+    errors.push({ msg: 'User name must be at least 5 character' });
+    if (phoneNumber.length < 10) {
+      console.log(phoneNumber.length);
+      errors.push({ msg: 'Phone number must be at least 10 character' });
+    }
+    errors.push({ msg: 'Updated unsuccessful your information' });
+    res.render('user/profile', { errors });
+  }
+
   try {
     const doc = await User.findOneAndUpdate(
       { _id: req.params.id },
@@ -181,6 +191,12 @@ const signIn = (req, res, next) => {
 const loadProfile = (req, res) => {
   res.render('user/profile');
 };
+const getHomePage = async (req, res) => {
+  const products = await Product.find().limit(6).exec();
+  res.render('index', {
+    products,
+  });
+};
 
 module.exports = {
   signup,
@@ -190,4 +206,5 @@ module.exports = {
   signIn,
   loadProfile,
   verifyUser,
+  getHomePage,
 };

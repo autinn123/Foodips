@@ -44,7 +44,7 @@
       <img src="<%= product.cover %> " alt="" />
       <h3><%= product.name %></h3>
       <div class="price">$<%= product.price %></div>
-      <a href="#" class="btn1">Add to cart</a>
+      <a href="/add-to-cart/<%= product._id %>" class="btn1">Add to cart</a>
     </div>
     <% }) %>
   </div>

@@ -204,6 +204,7 @@ section {
 .content button:hover {
   background: transparent;
   border: 2px solid #fff;
+  color: var(--main-color);
 }
 
 #btn-2 {
@@ -768,6 +769,7 @@ section {
 }
 .cart-items-container .cart-item .content {
   display: flex;
+  width: 50rem;
   padding: 1rem;
 }
 .cart-items-container .cart-item .content h3 {
@@ -1084,4 +1086,22 @@ section {
 #quantity {
   font-size: 1.5rem;
   color: red;
+}
+
+#inputQty {
+  width: 5rem;
+  text-align: center;
+}
+
+.content .img-frame {
+  width: 10rem;
+  height: auto;
+  overflow: hidden;
+  margin-right: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+.img-frame img {
+  width: 100%;
 }

@@ -6,4 +6,7 @@ const notAuthUser = require('../../middleware/comment');
 router.get('/:productId', productController.getComment);
 
 router.post('/addcomment', notAuthUser, productController.addComment);
+
+
+
 module.exports = router;

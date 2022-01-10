@@ -4,7 +4,9 @@
   <% products.forEach(product => { %>
   <div class="cart-item">
     <div class="content">
-      <img src="<%= product.item.cover %> " alt="" />
+      <div class="img-frame">
+        <img src="<%= product.item.cover %> " alt="cover" />
+      </div>
       <div class="des">
         <h3><%= product.item.name %></h3>
         <div class="price"><strong>Total:</strong> $<%= product.price %></div>
@@ -13,11 +15,27 @@
     <div class="div">
       <label style="font-size: 2rem"
         ><strong>Quantity:</strong>
-        <span style="font-size: 2rem"><%= product.qty %> </span></label
-      >
+        <a href="/increase/<%= product.item._id %> "
+          ><li class="fas fa-chevron-up"></li
+        ></a>
+        <input
+          type="number"
+          min="1"
+          value="<%= product.qty %>"
+          autocomplete="off"
+          id="inputQty"
+          disabled
+        />
+        <a href="/reduce/<%= product.item._id %>"
+          ><li class="fas fa-chevron-down"></li
+        ></a>
+        <div></div>
+      </label>
     </div>
     <div class="action">
-      <span class="fas fa-times"></span>
+      <a href="/remove/<%= product.item._id %> "
+        ><span class="fas fa-times"></span
+      ></a>
     </div>
   </div>
   <% }) %>
@@ -26,4 +44,6 @@
   </div>
   <button class="btn1">Checkout now</button>
 </div>
+<% } else { %>
+<h2 class="text-center mt-5">Your cart is empty</h2>
 <% } %>

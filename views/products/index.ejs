@@ -31,11 +31,13 @@
         </div>
       </a>
       <h3><%= product.name %></h3>
+      <input type="hidden" class="productId" value="<%= product._id %>">
       <div class="price">$<%= product.price %><span> </span></div>
       <a href="/add-to-cart/<%= product._id %> " class="btn1">Add to cart</a>
     </div>
     <% }) %>
   </div>
+
 <!-- pagination -->
 <div class="row">
     <!-- hiển thị phân trang nếu có trang -->
@@ -101,3 +103,5 @@
     <% } %>
   </div>
 </div>
+
+

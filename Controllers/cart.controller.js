@@ -1,63 +1,61 @@
-const Product = require('../models/product.model')
-const Cart = require('../models/cart.model')
+const Product = require('../models/product.model');
+const Cart = require('../models/cart.model');
 
-const addToCart = async (req, res, next) => {
+const addToCart = async function (req, res, next) {
+  var productId = req.params.id;
+  var cart = new Cart(req.session.cart ? req.session.cart : {});
   try {
-    const addedProduct = await Product.findById(req.params.id);
-    Cart.save(addedProduct)
+    const addedProduct = await Product.findById(productId);
+    cart.add(addedProduct, addedProduct.id);
+    req.session.cart = cart;
+    res.redirect('/products');
   } catch (error) {
-    
+    res.status(500).json({ msg: 'error' });
   }
+};
 
-}
+const removeItem = function (req, res, next) {
+  var productId = req.params.id;
+  var cart = new Cart(req.session.cart ? req.session.cart : {});
 
+  cart.removeItem(productId);
+  req.session.cart = cart;
+  res.redirect('/shopping-cart');
+};
 
+const reduceOne = function (req, res, next) {
+  var productId = req.params.id;
+  var cart = new Cart(req.session.cart ? req.session.cart : {});
 
+  cart.reduceByOne(productId);
+  req.session.cart = cart;
+  res.redirect('/shopping-cart');
+};
 
+const increaseOne = function (req, res, next) {
+  var productId = req.params.id;
+  var cart = new Cart(req.session.cart ? req.session.cart : {});
 
+  cart.increaseByOne(productId);
+  req.session.cart = cart;
+  res.redirect('/shopping-cart');
+};
 
+const getShoppingCart = function (req, res, next) {
+  if (!req.session.cart) {
+    return res.render('cart', { products: null });
+  }
+  var cart = new Cart(req.session.cart);
+  res.render('cart', {
+    products: cart.generateArray(),
+    totalPrice: cart.totalPrice,
+  });
+};
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// const Cart = require('../models/cart.model');
-// const productModel = require('../models/product.model');
-
-// const loadCart = async (req, res) => {
-//   try {
-//     const userCart = await Cart.find({ _id: req.user.id });
-//     const cartItems = userCart[product];
-//     res.json(cartItems);
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
-
-// const addProduct = async (req, res) => {
-//   const result = await Cart.addProductCheck(req.user.id);
-//   const newProduct = req.params.productId;
-//   const quantity = req.body.qty;
-//   try {
-//     const product = await productModel.findOne(newProduct);
-//     const updatedCart = await product.addToCart(result._id, quantity);
-//     res.json({ updatedCart });
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
-
-// module.exports = { loadCart, addProduct };
+module.exports = {
+  getShoppingCart,
+  increaseOne,
+  reduceOne,
+  addToCart,
+  removeItem,
+};

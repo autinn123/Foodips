@@ -63,4 +63,8 @@ const filterByCategory = async (req, res, next) => {
   });
 };
 
-module.exports = { getProduct, getDetailProduct, filterByCategory };
+module.exports = {
+  getProduct,
+  getDetailProduct,
+  filterByCategory,
+};
