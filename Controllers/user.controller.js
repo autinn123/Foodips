@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs');
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const nodemailer = require('../config/nodemailer');
+const Product = require('../models/product.model');
 
 const User = require('../models/user.model');
 
@@ -88,7 +89,6 @@ const signup = async (req, res) => {
 };
 
 const verifyUser = (req, res, next) => {
-  console.log(req.params.confirmationCode);
   User.findOne({
     confirmationCode: req.params.confirmationCode,
   })

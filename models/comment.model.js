@@ -13,11 +13,13 @@ const commentSchema = new Schema({
 
 // })
 
-commentSchema.statics.getComment = function (productId, cb) {
+commentSchema.statics.getComment = function (productId, start, limit, cb) {
   this.model('Comment')
     .find({ productId })
     .populate('userId', 'userName')
     .sort({ createdAt: -1 })
+    .skip(start)
+    .limit(limit)
     .exec((error, commentList) => {
       if (error) {
         cb(error, null);
@@ -26,6 +28,16 @@ commentSchema.statics.getComment = function (productId, cb) {
       }
     });
 };
+
+commentSchema.statics.getCommentAsync = function (productId, start, limit) {
+	return this.model('Comment')
+	  .find({ productId })
+	  .populate('userId', 'userName')
+	  .sort({ createdAt: -1 })
+	  .skip(start)
+	  .limit(limit)
+	  .exec()
+  };
 
 commentSchema.pre('save', function (next) {
   this.updatedAt = Date.now();
