@@ -40,11 +40,11 @@ const getComment = async (req, res) => {
 };
 
 const getProducts = async(req, res)  => {
-	let perPage = 6; // số lượng sản phẩm xuất hiện trên 1 page
+  let perPage = 6; // số lượng sản phẩm xuất hiện trên 1 page
   let page = req.query.page > 0  ? req.query.page : 1;
   let products = {};
 
-	let query = Products.find();
+  let query = Products.find();
   if (req.query.name != null && req.query.name != '') {
 	query = query.regex('name', new RegExp(req.query.name, 'i'))
 }
