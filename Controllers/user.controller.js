@@ -89,6 +89,7 @@ const signup = async (req, res) => {
 };
 
 const verifyUser = (req, res, next) => {
+console.log(req.params.confirmationCode)
   User.findOne({
     confirmationCode: req.params.confirmationCode,
   })
