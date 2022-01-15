@@ -202,9 +202,9 @@ section {
   transition: background 0.5s;
 }
 .content button:hover {
-  background: transparent;
+  opacity: 0.8;
   border: 2px solid #fff;
-  color: var(--main-color);
+  color: #fff;
 }
 
 #btn-2 {
@@ -710,6 +710,10 @@ section {
   height: 5rem;
   display: flex;
   align-items: center;
+}
+
+.search-form button {
+  background-color: transparent;
 }
 
 .search-form input {

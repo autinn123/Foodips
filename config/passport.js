@@ -11,11 +11,13 @@ module.exports = function (passport) {
       User.findOne({
         email: email,
       }).then((user) => {
-        if (user.status != 'Active') {
-          return done(null, false, {
-            message: 'Pending Account. Please Verify Your Email!',
-          });
-        }
+		if(user) {
+			if (user.status != 'Active') {
+			  return done(null, false, {
+				message: 'Pending Account. Please Verify Your Email!',
+			  });
+			}
+		}
         if (!user) {
           return done(null, false, { message: 'That email is not registered' });
         }

@@ -1,10 +1,15 @@
 <section class="main-menu">
   <h1 class="heading">our <span>menu</span></h1>
   <div class="filter-box">
-    <div class="search-form">
-      <input type="search" id="search-box" placeholder="Search here..." />
-      <label for="search-box" class="fas fa-search"></label>
-    </div>
+    <form class="search-form" action="/products">
+		<% if (searchOptions) { %>
+			<input type="search" id="search-box" name="name" value="<%= searchOptions.name %> " />
+			<% } else { %>
+		<input type="search" id="search-box" name="name" placeholder="Search here" />
+		<% } %> 
+
+	  <button type="submit"><label type="submit" for="search-box" class="fas fa-search"></label></button>
+    </form>
     <div class="filter">
         <ul>
             <% if (category === 1) { %>
@@ -22,7 +27,7 @@
       </ul>
     </div>
   </div>
-  <div class="box-container">
+  <div id="products" class="box-container">
     <% products.forEach(product => { %>
     <div class="box">
       <a href="/products/<%= product._id %>/detail">
@@ -45,36 +50,26 @@
     <nav class="mx-auto">
       <ul class="pagination" style="margin-top: 2rem;">
       
-        <!-- FIRST ITEM -->  
-        <% if(current == 1) { %> 
-            <li class="page-item disabled">
-              <a class="page-link" href="/">First</a>
-            </li>
-        <% } else { %>
-            <li class="page-item">
-              <a class="page-link" href="/">First</a>
-            </li>
-        <% } %>
         
         <!-- ITEMS  -->
         <% var i = (Number(current) > 3 ? Number(current) - 2 : 1) %> 
         <% if(i !== 1) { %>
             <li class="page-item disabled">
-              <a class="page-link" href="#">...</a>
+              <a class="page-link" >...</a>
             </li>
         <% } %>
         <% for(; i <= (Number(current) + 2) && i <= pages; i++) { %>
           <% if(i == current) { %>
-            <li class="page-item active">
-              <a class="page-link" href="/products?page=<%= i.toString() %>">
+            <li class="page-item active" onclick="getPage(this)">
+              <span class="page-link" >
                 <%= i %>
-              </a>
+              </span>
             </li>
         <% } else { %>
-            <li class="page-item">
-              <a class="page-link" href="/products?page=<%= i.toString() %>">
+            <li class="page-item" onclick="getPage(this)">
+              <span class="page-link" >
                 <%= i %>
-              </a>
+              </span>
             </li>
         <% } %>
         <% if (i == Number(current) + 2 && i < pages) { %>
@@ -83,25 +78,59 @@
             </li>
         <% } %>
         <% } %>
-        
-        <!-- LAST ITEM -->
-        <% if(current == pages) { %> 
-            <li class="page-item disabled">
-              <a class="page-link" href="#">
-                Last
-              </a>
-            </li>
-        <% } else { %>
-            <li class="page-item">
-              <a class="page-link" href="/products?page=<%= pages.toString() %>">
-                Last
-              </a>
-            </li>
-        <% } %>
       </ul>
     </nav>
     <% } %>
   </div>
 </div>
+<script>
+	const currentUrl = window.location.href;
+	const isCategory = currentUrl.split('/')[4] ? currentUrl.split('/')[4] : '';
+	let query = ''
+	if(currentUrl.includes('?')) {
+		query = currentUrl.split('?')[1];
+	}
+	const apiUrl = 'http://' + currentUrl.split('/')[2] + '/api/product/' + isCategory.toLocaleLowerCase() + '?' + query;
 
+	function getPage(element) {
+		$("ul.pagination").children(".active")[0].classList.remove("active");
+		element.classList.add('active');
+		const page = element.children[0].innerText;
 
+		if(typeof page === 'string') parseInt(page);
+		
+		$.ajax({
+			url: apiUrl + "&&page=" + page,
+			method: "GET",
+			success: function(res) {
+				console.log(res);
+				renderProducts(res.data);
+			},
+			error: function (response) {
+            alert('You should sign in or input your name and email below to comment');
+          },
+		})
+	}
+	function renderProducts(products) {
+		if(products.length > 0) {
+			let html = "";
+
+			for (let i = 0; i < products.length; i++) {
+				const product = products[i];
+
+				html += '<div class="box">';
+					html += '<a href="/products/' + product._id + '/detail">';
+					html += '<div class="img-wrap">';
+					html += '<img src="' + product.cover + '" alt="" />';
+					html += '</div>';
+					html += '</a>';
+					html += '<h3>' + product.name + '</h3>';
+					html += '<input type="hidden" class="productId" value="' + product._id + '">';
+					html += '<div class="price">$' + product.price + '<span> </span></div>';
+					html += '<a href="/add-to-cart/' + product._id + '" class="btn1">Add to cart</a>';
+				html += '</div>';
+			}
+			$("#products").html(html);
+		} 
+	}
+</script>

@@ -14,6 +14,22 @@ const productSchema = new Schema({
   activeFlag: { type: Number, required: 0, default: 1 },
 });
 
+
+productSchema.statics.getProducts =  function (category, start, limit, cb) {
+	this.model('Product')
+	  .find({ category })
+	  .sort({ createdAt: -1 })
+	  .skip(start)
+	  .limit(limit)
+	  .exec((error, commentList) => {
+		if (error) {
+		  cb(error, null);
+		} else {
+		  cb(null, commentList);
+		}
+	  });
+  };
+
 productSchema.methods.findSimilarCategory = function findSimilarType(cb) {
   return this.model('Product').find(
     { category: this.category, _id: { $ne: this._id } },

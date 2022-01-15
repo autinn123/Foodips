@@ -25,7 +25,7 @@
                     </a>
                     <h3><%= product.name %></h3>
                     <div class="price">$<%= product.price %></div>
-                    <a href="/menu/detail" class="btn1">add to cart</a>
+                    <a href="/add-to-cart/<%= product._id %> " class="btn1">add to cart</a>
                   </div>
                 <% }) %>
         </div>
@@ -42,11 +42,14 @@
                     <span class="commenter-name">
                         <input type="hidden" name="productId" value="<%= product._id %>">
                         <input type="text" placeholder="Add a public comment" name="content">
+						<% if (!user) { %>
+							<input style="margin-top: 1rem;" type="text" placeholder="Your name" name="userName">
+						<% } %>
                         <button type="submit" class="btn btn-default addComment">Comment</button>
                         <button type="cancel" class="btn btn-default">Cancel</button>
                     </span>
                 </div>
-                <div class="loadComments">
+                <div id="comments" class="loadComments">
                     <div class="all-comment">
                     </div>
                 </div>
@@ -54,11 +57,85 @@
             </div>
         </div>
         <!-- pagination -->
-
-</div>
+	</div>
+	<div class="row pagination">
+		<div class="col-md-12">
+			<button type="button" class="btn btn-info" style="float: left" onclick="getNext()">Load more</button>
+		</div>
+	</div>
     </div>
 </div>
-<script>
+<script type="text/javascript">
+	var productId = $('input[name=productId]').val();
+
+	let start = 0;
+	const limit = 3;
+
+	function getNext() {
+		start = start + limit;
+		$.ajax({
+			url: "/api/product/comments/" + productId + "/" + start + "/" + limit,
+			method: "GET",
+			success: function(res) {
+				renderComments(res.data);
+			}
+		})
+	}
+
+
+	function renderComments(comments) {
+		if(comments.length > 0) {
+			let  html = "";
+
+			for (let i = 0; i < comments.length; i++) {
+				const comment = comments[i];
+				const time = timeSince(Date.parse(comment.createdAt));
+				$('div.all-comment').append(
+                "<div class='comment-box commented'>" +
+                        "<span class='commenter-pic'>" +
+                            "<img src='/images/user-default-icon.png' class='img-fluid'>" +
+                        "</span>" +
+                        "<span class='commenter-name'>" +
+                            "<a href='#'>" + 
+                                comment.userId.userName + 
+                            "</a> <span class='comment-time'>" + time + " ago </span>" +
+                        "</span>" +
+                        "<p class='comment-txt more'>" + 
+                            comment.content +
+                        "</p>" +
+                    "</div>"
+              );
+			}
+		}
+	}
+
+	function timeSince(date) {
+
+		var seconds = Math.floor((new Date() - date) / 1000);
+
+		var interval = seconds / 31536000;
+
+		if (interval > 1) {
+		return Math.floor(interval) + " years";
+		}
+		interval = seconds / 2592000;
+		if (interval > 1) {
+		return Math.floor(interval) + " months";
+		}
+		interval = seconds / 86400;
+		if (interval > 1) {
+		return Math.floor(interval) + " days";
+		}
+		interval = seconds / 3600;
+		if (interval > 1) {
+		return Math.floor(interval) + " hours";
+		}
+		interval = seconds / 60;
+		if (interval > 1) {
+		return Math.floor(interval) + " minutes";
+		}
+		return Math.floor(seconds) + " seconds";
+	}
     $(document).ready(function() {
     // alert('application started');
     getdata();
@@ -67,12 +144,14 @@
         e.preventDefault();
         var productId = $('input[name=productId]').val();
         var content = $('input[name=content]').val();
+        var userName = $('input[name=userName]').val();
         $.ajax({
           url: '/api/product/addComment',
           method: 'post',
           dataType: 'json',
           data: { productId,
                 content,
+				userName
             },
           success: function (response) {
             if (response.msg == 'success') {
@@ -84,15 +163,17 @@
             }
           },
           error: function (response) {
+			console.log(response)
             alert('You should sign in or input your name and email below to comment');
           },
         });
       });
 
     function getdata() {
-    var productId = $('input[name=productId]').val();
+	var productId = $('input[name=productId]').val();
+	
     $.ajax({
-      url: `/api/product/${productId}`,
+      url: `/api/product/comments/${productId}/0/3`,
       method: 'get',
       dataType: 'json',
       success: function (response) {
@@ -103,10 +184,11 @@
             response.data !== null ||
             response.data !== ''
           ) {
+			  console.log(response.data)
             $('.all-comment').show();
             $.each(response.data, function (index, data) {
             const time = timeSince(Date.parse(data.createdAt));
-              $('div.all-comment').append(
+			$('div.all-comment').append(
                 "<div class='comment-box commented'>" +
                         "<span class='commenter-pic'>" +
                             "<img src='/images/user-default-icon.png' class='img-fluid'>" +
@@ -131,32 +213,6 @@
     });
   }
 
-  function timeSince(date) {
-
-        var seconds = Math.floor((new Date() - date) / 1000);
-
-        var interval = seconds / 31536000;
-
-        if (interval > 1) {
-        return Math.floor(interval) + " years";
-        }
-        interval = seconds / 2592000;
-        if (interval > 1) {
-        return Math.floor(interval) + " months";
-        }
-        interval = seconds / 86400;
-        if (interval > 1) {
-        return Math.floor(interval) + " days";
-        }
-        interval = seconds / 3600;
-        if (interval > 1) {
-        return Math.floor(interval) + " hours";
-        }
-        interval = seconds / 60;
-        if (interval > 1) {
-        return Math.floor(interval) + " minutes";
-        }
-        return Math.floor(seconds) + " seconds";
-}
+  
 })
 </script>

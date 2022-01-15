@@ -14,6 +14,20 @@ const addToCart = async function (req, res, next) {
   }
 };
 
+const addWithQty = async function (req, res, next) {
+	var productId = req.params.id;
+	var qty = req.body.qty;
+	var cart = new Cart(req.session.cart ? req.session.cart : {});
+	try {
+	  const addedProduct = await Product.findById(productId);
+	  cart.addWithQty(addedProduct, addedProduct.id, qty);
+	  req.session.cart = cart;
+	  res.redirect('/products');
+	} catch (error) {
+	  res.status(500).json({ msg: 'error' });
+	}
+  };
+
 const removeItem = function (req, res, next) {
   var productId = req.params.id;
   var cart = new Cart(req.session.cart ? req.session.cart : {});
@@ -58,4 +72,5 @@ module.exports = {
   reduceOne,
   addToCart,
   removeItem,
+  addWithQty
 };

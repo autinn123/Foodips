@@ -14,6 +14,17 @@ module.exports = function Cart(oldCart) {
     this.totalPrice += parseFloat(storedItem.item.price);
   };
 
+  this.addWithQty = function(item, id, qty) {
+	var storedItem = this.items[id];
+	if (!storedItem) {
+		storedItem = this.items[id] = { item: item, qty: 0, price: 0 };
+	  }
+	  storedItem.qty = qty;
+	  storedItem.price = storedItem.item.price * storedItem.qty;
+	  this.totalQty++;
+	  this.totalPrice += parseFloat(storedItem.item.price);
+  }
+
   this.reduceByOne = function (id) {
     this.items[id].qty--;
     this.items[id].price -= this.items[id].item.price;
