@@ -44,7 +44,7 @@ const getProducts = async(req, res)  => {
   let page = req.query.page > 0  ? req.query.page : 1;
   let products = {};
 
-
+	let query = Products.find();
   if (req.query.name != null && req.query.name != '') {
 	query = query.regex('name', new RegExp(req.query.name, 'i'))
 }
@@ -57,6 +57,7 @@ try {
 	
 	  res.status(200).json({ msg: 'success', data: products });
 } catch (error) {
+	console.log(error)
 	res.status(500).json({ msg: 'error' });
 }
 
