@@ -17,6 +17,11 @@ module.exports = function (passport) {
 				message: 'Pending Account. Please Verify Your Email!',
 			  });
 			}
+			if (user.status != ' Deactivate') {
+			  return done(null, false, {
+				message: 'Your account is locked right now!',
+			  });
+			}
 		}
         if (!user) {
           return done(null, false, { message: 'That email is not registered' });
