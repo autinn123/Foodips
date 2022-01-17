@@ -18,7 +18,7 @@
         <div class="relavent">
             <% recommendProducts.forEach(product => { %>
                 <div class="box">
-                    <a href="/products/detail/<%= product._id %>">
+                    <a href="/products/<%= product._id %>/detail">
                       <div class="img-wrap">
                         <img src="<%= product.cover %> " alt="" />
                       </div>
@@ -43,7 +43,7 @@
                         <input type="hidden" name="productId" value="<%= product._id %>">
                         <input type="text" placeholder="Add a public comment" name="content">
 						<% if (!user) { %>
-							<input style="margin-top: 1rem;" type="text" placeholder="Your name" name="userName">
+							<input type="text" placeholder="Your name" name="userName">
 						<% } %>
                         <button type="submit" class="btn btn-default addComment">Comment</button>
                         <button type="cancel" class="btn btn-default">Cancel</button>
@@ -60,7 +60,7 @@
 	</div>
 	<div class="row pagination">
 		<div class="col-md-12">
-			<button type="button" class="btn btn-info" style="float: left" onclick="getNext()">Load more</button>
+			<button id="load" type="button" class="btn btn-info" style="float: left" onclick="getNext()">Load more</button>
 		</div>
 	</div>
     </div>

@@ -42,7 +42,7 @@ const getDetailProduct = async (req, res, next) => {
   try {
     const product = await Products.findById(req.params.id);
 
-    const recommendProducts = await product.findSimilarCategory().limit(4);
+    const recommendProducts = await product.findSimilarCategory().limit(3);
 
     res.render('products/detail', {
       product: product,

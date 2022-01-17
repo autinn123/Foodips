@@ -57,7 +57,6 @@ try {
 	
 	  res.status(200).json({ msg: 'success', data: products });
 } catch (error) {
-	console.log(error)
 	res.status(500).json({ msg: 'error' });
 }
 
@@ -70,13 +69,16 @@ const getCategoryProducts = async(req, res)  => {
   if (category !== 1) {
     category = category.charAt(0).toUpperCase() + category.slice(1);
   }
-
-  products = await Products.find({ category }) // find tất cả các data
-    .skip(perPage * page - perPage) // Trong page đầu tiên sẽ bỏ qua giá trị là 0
-    .limit(perPage)
-    .exec();
-	
-	res.status(200).json({ msg: 'success', data: products });
+  try {
+	  products = await Products.find({ category }) // find tất cả các data
+		.skip(perPage * page - perPage) // Trong page đầu tiên sẽ bỏ qua giá trị là 0
+		.limit(perPage)
+		.exec();
+		
+		res.status(200).json({ msg: 'success', data: products });
+  } catch (error) {
+	res.status(500).json({ msg: 'error' });
+  }
 }
 
 
