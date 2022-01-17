@@ -42,7 +42,10 @@
   <div class="total" style="font-size: 2rem">
     <strong>Subtotal:</strong> $<%= totalPrice %>
   </div>
-  <button class="btn1">Checkout now</button>
+  <!-- <a href="/order" id="checkout-btn" class="btn1">Checkout now</a> -->
+  <form action="/order">
+    <button type="submit" class="btn1">Checkout now</button>
+  </form>  
 </div>
 <% } else { %>
 <h2 class="text-center mt-5">Your cart is empty</h2>

@@ -26,6 +26,7 @@
     "nodemailer": "^6.7.2",
     "passport": "^0.5.0",
     "passport-local": "^1.0.0",
+    "stripe": "^8.197.0",
     "uuid": "^8.3.2"
   },
   "devDependencies": {

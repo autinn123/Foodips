@@ -15,6 +15,7 @@ const flash = require('express-flash');
 const session = require('express-session');
 const methodOverride = require('method-override');
 const MongoStore = require('connect-mongo');
+const stripe = require('stripe')("process.env.PRIVATE_KEY")
 
 require('./config/passport')(passport);
 
@@ -89,5 +90,33 @@ app.use('/api', apiRouter);
 app.all('*', (req, res) => {
   res.status(404).send('<h1 >404! Page not found</h1>');
 });
+
+// middleware
+app.use(express.json());
+// route
+app.post("/payment", async (req, res) => {
+  const {product} = req.body;
+  const session = await stripe.checkout.sessions.create({
+    payment_method_types: ['card'],
+    line_items: [
+      {
+        price_data: {
+          currency: "usd",
+          product_data: {
+            name: product.name,
+            images: [product.image]
+          },
+          unit_amount: product.amount * 100,
+        },
+        quantity: product.quantity,
+      }
+    ],
+    mode: "payment",
+    success_url: '${YOUR_DOMAIN}',
+    cancel_url: '${YOUR_DOMAIN}'
+  })
+
+  res.json({id: session.id})
+})
 
 app.listen(process.env.PORT || 3000);
