@@ -9,7 +9,9 @@
       </div>
       <div class="des">
         <h3><%= product.item.name %></h3>
-        <div class="price"><strong>Total:</strong> $<%= product.price %></div>
+        <div class="price">
+          <strong>Total:</strong> $<%= parseFloat(product.price.toFixed(1)) %>
+        </div>
       </div>
     </div>
     <div class="div">
@@ -40,12 +42,12 @@
   </div>
   <% }) %>
   <div class="total" style="font-size: 2rem">
-    <strong>Subtotal:</strong> $<%= totalPrice %>
+    <strong>Subtotal:</strong> $<%= parseFloat(totalPrice.toFixed(1)) %>
   </div>
   <!-- <a href="/order" id="checkout-btn" class="btn1">Checkout now</a> -->
   <form action="/order">
     <button type="submit" class="btn1">Checkout now</button>
-  </form>  
+  </form>
 </div>
 <% } else { %>
 <h2 class="text-center mt-5">Your cart is empty</h2>
