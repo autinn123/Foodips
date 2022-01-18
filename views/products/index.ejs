@@ -19,9 +19,9 @@
                 <% } %> 
             <% categorys.forEach(item => { %>
                 <% if (category === item) { %>
-                    <li class="list active" data-filter="Food" onclick="Data(this)"><a href="/products/<%= item.toString() %>"><%= item %></a> </li>
+                    <a href="/products/<%= item.toString() %>"><li class="list active" data-filter="Food" onclick="Data(this)"><%= item %></li></a>
                 <% } else {%>
-                    <li class="list" data-filter="Food" onclick="Data(this)"><a href="/products/<%= item.toString() %>"><%= item %></a> </li>
+                   <a href="/products/<%= item.toString() %>"> <li class="list" data-filter="Food" onclick="Data(this)"><%= item %></li></a> 
                  <% } %> 
             <% }) %>
       </ul>

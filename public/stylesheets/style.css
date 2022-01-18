@@ -396,8 +396,8 @@ section {
   cursor: pointer;
   letter-spacing: 0.1rem;
 }
-.filter ul li a {
-  color: var(--black);
+.filter ul a {
+  color: #fff;
 }
 
 .filter ul li:hover {
