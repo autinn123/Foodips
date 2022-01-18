@@ -21,8 +21,8 @@ module.exports = function Cart(oldCart) {
 	  }
 	  storedItem.qty = qty;
 	  storedItem.price = storedItem.item.price * storedItem.qty;
-	  this.totalQty++;
-	  this.totalPrice += parseFloat(storedItem.item.price);
+	  this.totalQty += parseInt(qty);
+	  this.totalPrice += storedItem.item.price * qty;
   }
 
   this.reduceByOne = function (id) {

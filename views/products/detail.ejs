@@ -188,6 +188,7 @@
             $('.all-comment').show();
             $.each(response.data, function (index, data) {
             const time = timeSince(Date.parse(data.createdAt));
+			console.log(time);
 			$('div.all-comment').append(
                 "<div class='comment-box commented'>" +
                         "<span class='commenter-pic'>" +
