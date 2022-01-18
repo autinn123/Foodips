@@ -43,8 +43,18 @@ const getProducts = async(req, res)  => {
   let perPage = 6; // số lượng sản phẩm xuất hiện trên 1 page
   let page = req.query.page > 0  ? req.query.page : 1;
   let products = {};
+  const orderBy = req.query.order;
 
   let query = Products.find();
+
+	if(orderBy == 'asc') {
+		query.sort({ price: 1 })
+	} 
+
+	if(orderBy == 'desc') {
+		query.sort({ price: -1 })
+	} 
+
   if (req.query.name != null && req.query.name != '') {
 	query = query.regex('name', new RegExp(req.query.name, 'i'))
 }

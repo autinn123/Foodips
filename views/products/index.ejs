@@ -10,6 +10,15 @@
 
 	  <button type="submit"><label type="submit" for="search-box" class="fas fa-search"></label></button>
     </form>
+	<div class="dropdown">
+		<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		  By price
+		</button>
+		<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+		  <a class="dropdown-item" href="/products?order=asc">Increase</a>
+		  <a class="dropdown-item" href="/products?order=desc">Decrease</a>
+		</div>
+	  </div>
     <div class="filter">
         <ul>
             <% if (category === 1) { %>

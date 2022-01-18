@@ -1,13 +1,19 @@
 const Products = require('../models/product.model');
 
 const getProduct = async (req, res, next) => {
+	const orderBy = req.query.order;
   let perPage = 6; 
   let page = req.query.page || 1;
 
+  let query =  Products.find()
+  let countDoc = Products.find() 
+	if(orderBy == 'asc') {
+		query.sort({ price: 1 })
+	} 
 
-  	let query =  Products.find() 
-	let countDoc = Products.find() 
-    
+	if(orderBy == 'desc') {
+		query.sort({ price: -1 })
+	} 
 
 	if (req.query.name != null && req.query.title != '') {
 		query = query.regex('name', new RegExp(req.query.name, 'i'))
