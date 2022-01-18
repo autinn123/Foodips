@@ -85,7 +85,7 @@
 	if(currentUrl.includes('?')) {
 		query = currentUrl.split('?')[1];
 	}
-	const apiUrl = 'https://' + currentUrl.split('/')[2] + '/api/product/' + isCategory.toLocaleLowerCase() + '?' + query;
+	const apiUrl = currentUrl.split('/')[0] + '//' + currentUrl.split('/')[2] + '/api/product/' + isCategory.toLocaleLowerCase() + '?' + query;
 
 	function getPage(element) {
 		$("ul.pagination").children(".active")[0].classList.remove("active");
