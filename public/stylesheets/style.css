@@ -1224,3 +1224,13 @@ span.price {
 .cTitle {
   font-size: 15px;
 }
+
+.payBtn {
+    width: 250px;
+    padding: 10px;
+    height: auto;
+    background-color: gray;
+    border-radius: 5px;
+    border: 2px solid black;
+    text-align: justify;
+}

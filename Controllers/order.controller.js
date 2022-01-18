@@ -13,24 +13,45 @@ const getOrder = function (req, res, next) {
   });
 };
 
-const checkout = (req, res) => {
-  const { fname, email, adr, phone } =
+const checkout = async (req, res) => {
+  var cart = new Cart(req.session.cart);
+
+  const { firstname, email, address, phone } =
     req.body;
   let errors = [];
-  if(!fname || !email || !adr || !phone){
+  if(!firstname || !email || !address || !phone){
     errors.push({ msg: 'Please enter all fields' });
   }
 
-  /*if (errors.length > 0) {  
+  if (errors.length > 0) {  
+    
     res.render('order', {
+      products: cart.generateArray(),
+      totalPrice: cart.totalPrice,
       errors,
-      fname,
+      firstname,
       email,
-      adr,
+      address,
       phone,
     });
-  }*/ else {
-    const stripe = Stripe("process.env.PUBLIC_KEY")
+  } else {
+    // create order
+    const result = await Order.create({
+        userId: req.user._id,
+        name: firstname,
+        email: email,
+        address: address,
+        phone: phone,
+        products: cart.generateArray(),
+        totalPrice: cart.totalPrice,
+    });
+
+
+    res.render('order/payment', {
+      products: cart.generateArray(),
+      totalPrice: cart.totalPrice,
+    });
+    /*const stripe = Stripe("pk_test_51KIBC6CVCcM9rdH2FnpvypVWXNbohFsIJNNIPWhnMB1lAihHbzDC4SEYKeo3DCJUtv5Ea965VYciUm9hGPzbGgEU00k7jjOfAq");
 
     fetch('/payment', {
       headers: {"Content-Type": "application/json"},
@@ -38,7 +59,6 @@ const checkout = (req, res) => {
       body: JSON.stringify({
         "product": {
           "name": "iPhone 12",
-          "image": "",
           "amount": 100,
           "quantity": 1
           }
@@ -53,7 +73,7 @@ const checkout = (req, res) => {
         }
       }).catch (function (error) {
         console.log("Error",error)
-      })
+      })*/
     }
 }
 

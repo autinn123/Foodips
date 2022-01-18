@@ -15,7 +15,8 @@ const flash = require('express-flash');
 const session = require('express-session');
 const methodOverride = require('method-override');
 const MongoStore = require('connect-mongo');
-const stripe = require('stripe')("process.env.PRIVATE_KEY")
+const stripe = require('stripe')(process.env.PRIVATE_KEY) 
+const YOUR_DOMAIN = "http://localhost:3000";
 
 require('./config/passport')(passport);
 
@@ -87,36 +88,71 @@ app.use('/user', userRouter);
 app.use('/api/product', apiProductRouter);
 app.use('/api', apiRouter);
 
+// middleware
+app.use(express.json());
+
+
+// route
+app.post("/payment", async (req, res) => {
+    const { product } = req.body;
+    const session = await stripe.checkout.sessions.create({
+        payment_method_types: ["card"],
+        line_items: [
+            {
+                price_data: {
+                    currency: "inr",
+                    product_data: {
+                        name: product.name,
+                        images: [product.image],
+                    },
+                    unit_amount: product.amount * 100,
+                },
+                quantity: product.quantity,
+            },
+        ],
+        mode: "payment",
+        success_url: `${YOUR_DOMAIN}`,
+        cancel_url: `${YOUR_DOMAIN}`,
+    });
+
+    res.json({ id: session.id });
+});
+
+/*const storeItems = new Map([
+  [1, { priceInCents: 10000, name: "Learn React Today" }],
+  [2, { priceInCents: 20000, name: "Learn CSS Today" }],
+])
+
+app.post("/create-checkout-session", async (req, res) => {
+  try {
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],
+      mode: "payment",
+      line_items: req.body.items.map(item => {
+        const storeItem = storeItems.get(item.id)
+        return {
+          price_data: {
+            currency: "usd",
+            product_data: {
+              name: storeItem.name,
+            },
+            unit_amount: storeItem.priceInCents,
+          },
+          quantity: item.quantity,
+        }
+      }),
+      success_url: `index.ejs/success.html`,
+      cancel_url: `cancel.html`,
+    })
+    res.json({ url: session.url })
+  } catch (e) {
+    res.status(500).json({ error: e.message })
+  }
+})*/
+
 app.all('*', (req, res) => {
   res.status(404).send('<h1 >404! Page not found</h1>');
 });
 
-// middleware
-app.use(express.json());
-// route
-app.post("/payment", async (req, res) => {
-  const {product} = req.body;
-  const session = await stripe.checkout.sessions.create({
-    payment_method_types: ['card'],
-    line_items: [
-      {
-        price_data: {
-          currency: "usd",
-          product_data: {
-            name: product.name,
-            images: [product.image]
-          },
-          unit_amount: product.amount * 100,
-        },
-        quantity: product.quantity,
-      }
-    ],
-    mode: "payment",
-    success_url: '${YOUR_DOMAIN}',
-    cancel_url: '${YOUR_DOMAIN}'
-  })
-
-  res.json({id: session.id})
-})
 
 app.listen(process.env.PORT || 3000);
